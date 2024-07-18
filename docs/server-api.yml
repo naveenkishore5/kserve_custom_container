@@ -1,0 +1,82 @@
+swagger: '2.0'
+info:
+  title: SKLearn Model API
+  description: API endpoints for serving SKLearn model predictions and health checks
+  version: '1.0'
+
+paths:
+  /v1/models/{model_name}/predict:
+    post:
+      summary: Endpoint for making predictions with the SKLearn model
+      operationId: predict
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: model_name
+          in: path
+          required: true
+          type: string
+          description: Name of the model to use for prediction
+        - name: instances
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              instances:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    cylinders:
+                      type: integer
+                    displacement:
+                      type: number
+                    horsepower:
+                      type: integer
+                    weight:
+                      type: integer
+                    acceleration:
+                      type: number
+                    model_year:
+                      type: integer
+                    origin:
+                      type: integer
+            example:
+              instances:
+                - cylinders: 6
+                  displacement: 304.0
+                  horsepower: 150
+                  weight: 3504
+                  acceleration: 10.5
+                  model_year: 80
+                  origin: 1
+      responses:
+        '200':
+          description: Successful prediction response
+          schema:
+            type: object
+            properties:
+              predictions:
+                type: array
+                items:
+                  type: number
+            example:
+              predictions: [22.4, 20.3, 25.1]
+
+  /v2/health/live:
+    get:
+      summary: Health check endpoint for liveness probe
+      operationId: live
+      responses:
+        '200':
+          description: Service is healthy
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+            example:
+              status: "ok"

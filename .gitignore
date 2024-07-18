@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Docker
+Dockerfile
+*.log
+
+# Environment
+venv/
+.env
+
+# Other
+*.swp
+.idea/
+.vscode/
